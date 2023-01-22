@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 - Clone the repository
 
 ```
-git clone https://github.com/your_repository.git
+git clone https://github.com/Jonajor/recipe.git
 
 cd recipe
 ```
