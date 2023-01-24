@@ -27,6 +27,10 @@ dependencies {
 	implementation("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("io.mockk:mockk-jvm:1.13.2") {
+		exclude("org.junit.vintage","junit-vintage-engine")
+	}
+	testImplementation(kotlin("test"))
 }
 
 tasks.withType<KotlinCompile> {
