@@ -17,11 +17,7 @@ class RecipeHandler(private val recipeService: RecipeService) {
 
     suspend fun getRecipeById(serverRequest: ServerRequest): ServerResponse {
         val id = serverRequest.pathVariable("id").toLong()
-        val recipeById = recipeService.getRecipeById(id)
-        return when {
-            recipeById.isEmpty -> ServerResponse.notFound().buildAndAwait()
-            else -> ok().bodyValueAndAwait(recipeById.get())
-        }
+        return ok().bodyValueAndAwait(recipeService.getRecipeById(id))
     }
 
     suspend fun addRecipe(serverRequest: ServerRequest): ServerResponse {

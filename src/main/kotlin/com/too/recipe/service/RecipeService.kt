@@ -4,7 +4,6 @@ import com.too.recipe.dto.RecipeDTO
 import com.too.recipe.exception.RecipeNotFoundException
 import com.too.recipe.repository.RecipeRepository
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class RecipeService(private val recipeRepository: RecipeRepository) {
@@ -13,8 +12,9 @@ class RecipeService(private val recipeRepository: RecipeRepository) {
         return recipeRepository.findAll().map { RecipeDTO.fromEntity(it) }
     }
 
-    suspend fun getRecipeById(id: Long): Optional<RecipeDTO> {
+    suspend fun getRecipeById(id: Long): RecipeDTO {
         return recipeRepository.findById(id).map { RecipeDTO.fromEntity(it) }
+            .orElseThrow { RecipeNotFoundException("Recipe with id $id not found") }
     }
 
     suspend fun addRecipe(recipe: RecipeDTO): RecipeDTO {
@@ -33,6 +33,8 @@ class RecipeService(private val recipeRepository: RecipeRepository) {
     }
 
     suspend fun deleteRecipe(id: Long) {
-        recipeRepository.deleteById(id)
+        recipeRepository.existsById(id).takeIf { it }?.let {
+            recipeRepository.deleteById(id)
+        } ?: throw RecipeNotFoundException("Recipe with id $id not found")
     }
 }
